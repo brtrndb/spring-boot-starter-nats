@@ -1,0 +1,50 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+plugins {
+    id 'idea'
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'io.freefair.lombok' version "${plugin_lombok_version}"
+    id 'org.springframework.boot' version "${plugin_spring_boot_version}"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+group "${project_group}"
+version "${project_version}"
+
+sourceCompatibility = JavaVersion.toVersion("${jdk_version_source}")
+targetCompatibility = JavaVersion.toVersion("${jdk_version_target}")
+
+dependencies {
+    // Main dependencies.
+    api("io.nats:jnats:${nats_version}")
+    implementation("org.springframework.boot:spring-boot-autoconfigure:${plugin_spring_boot_version}")
+    implementation("org.springframework.boot:spring-boot-autoconfigure-processor:${plugin_spring_boot_version}")
+    implementation("org.springframework.boot:spring-boot-starter-json:${plugin_spring_boot_version}") {
+        exclude group: 'org.springframework', module: 'spring-web'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter'
+    }
+    implementation("org.springframework.boot:spring-boot-starter-logging:${plugin_spring_boot_version}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:${plugin_spring_boot_version}")
+    compileOnly("org.jetbrains:annotations:${jetbrains_annotations_version}")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:${plugin_spring_boot_version}")
+
+    // Tests dependencies.
+    testImplementation(platform("org.testcontainers:testcontainers-bom:${testcontainers_version}"))
+    testImplementation("org.springframework.boot:spring-boot-starter-test:${plugin_spring_boot_version}") { exclude group: 'org.junit.vintage', module: 'junit-vintage-engine' }
+    testImplementation('org.testcontainers:testcontainers')
+    testImplementation('org.testcontainers:junit-jupiter')
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events = [/*TestLogEvent.STARTED,*/ TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED]
+    }
+    ignoreFailures = true
+}
