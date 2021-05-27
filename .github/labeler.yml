@@ -1,0 +1,31 @@
+readme:
+  - README.md
+
+license:
+  - LICENSE.md
+
+main:
+  - 'src/main/java/**/*.java'
+
+test:
+  - 'src/test/java/**/*.java'
+
+gradle:
+  - '**/*.gradle'
+  - gradle.properties
+  - gradle/wrapper/gradle-wrapper.properties
+
+github_actions:
+  - '.github/*.{yml,yaml}'
+  - '.github/**/*.{yml,yaml}'
+
+git:
+  - .gitignore
+  - .gitattributes
+
+config:
+  - '*.config'
+
+ide:
+  - '.idea/**'
+  - .editorconfig
