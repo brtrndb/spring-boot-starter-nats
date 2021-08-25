@@ -15,5 +15,4 @@ import tech.brtrndb.nats.autoconfigure.NatsAutoConfiguration;
 @Documented
 @Import(NatsAutoConfiguration.class)
 public @interface EnableNatsAutoConfiguration {
-    /**/
 }

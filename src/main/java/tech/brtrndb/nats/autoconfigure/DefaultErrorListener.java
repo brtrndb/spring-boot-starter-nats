@@ -25,5 +25,4 @@ public class DefaultErrorListener implements ErrorListener {
         log.error("NATS connection error occurred: {}. ", error);
     }
 
-    /**/
 }

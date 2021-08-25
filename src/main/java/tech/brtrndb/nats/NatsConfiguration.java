@@ -100,8 +100,7 @@ public class NatsConfiguration {
      * @return NATS options based on this set of properties.
      */
     public Options toOptions() {
-        return toOptionsBuilder().build();
+        return this.toOptionsBuilder().build();
     }
 
-    /**/
 }

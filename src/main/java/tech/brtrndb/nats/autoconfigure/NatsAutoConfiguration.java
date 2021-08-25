@@ -23,7 +23,7 @@ import tech.brtrndb.nats.NatsConfiguration;
  */
 @Slf4j
 @ConditionalOnClass({Connection.class})
-@EnableConfigurationProperties(NatsConfiguration.class)
+@EnableConfigurationProperties({NatsConfiguration.class})
 public class NatsAutoConfiguration {
 
     /**
@@ -66,5 +66,4 @@ public class NatsAutoConfiguration {
         return new DefaultErrorListener();
     }
 
-    /**/
 }

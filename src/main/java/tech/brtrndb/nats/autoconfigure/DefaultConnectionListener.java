@@ -14,5 +14,4 @@ public class DefaultConnectionListener implements ConnectionListener {
         log.info("NATS connection status has changed: {}.", type);
     }
 
-    /**/
 }
