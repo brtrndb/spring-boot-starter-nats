@@ -8,22 +8,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 
 @Data
 @NoArgsConstructor
 @Configuration
-@ConfigurationProperties(prefix = "spring.nats")
-public class NatsConfiguration {
+@ConfigurationProperties(prefix = NatsProperties.PREFIX, ignoreUnknownFields = false)
+public class NatsProperties {
+
+    public static final String PREFIX = "spring.nats";
 
     /**
      * NATS server url.
      */
-    private String server = Options.DEFAULT_URL;
+    @NonNull
+    private String server;
 
     /**
      * Connection name, shows up in thread names.
      */
-    private String connectionName;
+    private String connectionName = "unnamed-connection";
 
     /**
      * Time between pings to the server to check "liveness".

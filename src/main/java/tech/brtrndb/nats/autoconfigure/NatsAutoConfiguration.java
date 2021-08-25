@@ -14,16 +14,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import tech.brtrndb.nats.NatsConfiguration;
+import tech.brtrndb.nats.NatsProperties;
 
 /**
  * {@link org.springframework.boot.autoconfigure.EnableAutoConfiguration Auto-configuration} for NATS.
- * {@link NatsAutoConfiguration} will create a NATS connection from an instance of {@link NatsConfiguration}.
+ * {@link NatsAutoConfiguration} will create a NATS connection from an instance of {@link NatsProperties}.
  * A default connection and error handler is provided with basic logging.
  */
 @Slf4j
 @ConditionalOnClass({Connection.class})
-@EnableConfigurationProperties({NatsConfiguration.class})
+@EnableConfigurationProperties({NatsProperties.class})
 public class NatsAutoConfiguration {
 
     /**
@@ -33,17 +33,17 @@ public class NatsAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public Connection connection(NatsConfiguration natsConfiguration, ConnectionListener connectionListener, ErrorListener errorListener) throws IOException, InterruptedException {
-        Objects.requireNonNull(natsConfiguration, "NATS properties should not be null");
+    public Connection connection(NatsProperties natsProperties, ConnectionListener connectionListener, ErrorListener errorListener) throws IOException, InterruptedException {
+        Objects.requireNonNull(natsProperties, "NATS properties should not be null");
 
-        String server = natsConfiguration.getServer().strip();
+        String server = natsProperties.getServer().strip();
 
         if (server.isEmpty()) {
             throw new IllegalArgumentException("NATS server url should not be empty");
         }
 
-        log.debug("NATS will be configured with properties: {}.", natsConfiguration);
-        Options options = natsConfiguration.toOptionsBuilder()
+        log.debug("NATS will be configured with properties: {}.", natsProperties);
+        Options options = natsProperties.toOptionsBuilder()
                 .connectionListener(connectionListener)
                 .errorListener(errorListener)
                 .build();
