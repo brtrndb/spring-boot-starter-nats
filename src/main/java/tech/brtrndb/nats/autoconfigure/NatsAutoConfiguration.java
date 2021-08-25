@@ -10,6 +10,7 @@ import io.nats.client.ErrorListener;
 import io.nats.client.Nats;
 import io.nats.client.Options;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -60,12 +61,14 @@ public class NatsAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnBean(Connection.class)
     @ConditionalOnMissingBean
     public ConnectionListener connectionListener() {
         return new DefaultConnectionListener();
     }
 
     @Bean
+    @ConditionalOnBean(Connection.class)
     @ConditionalOnMissingBean
     public ErrorListener errorListener() {
         return new DefaultErrorListener();
