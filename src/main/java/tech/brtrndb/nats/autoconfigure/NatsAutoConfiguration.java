@@ -2,6 +2,7 @@ package tech.brtrndb.nats.autoconfigure;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import io.nats.client.Connection;
 import io.nats.client.ConnectionListener;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import tech.brtrndb.nats.NatsProperties;
 
@@ -22,6 +24,7 @@ import tech.brtrndb.nats.NatsProperties;
  * A default connection and error handler is provided with basic logging.
  */
 @Slf4j
+@Configuration
 @ConditionalOnClass({Connection.class})
 @EnableConfigurationProperties({NatsProperties.class})
 public class NatsAutoConfiguration {
@@ -36,7 +39,9 @@ public class NatsAutoConfiguration {
     public Connection connection(NatsProperties natsProperties, ConnectionListener connectionListener, ErrorListener errorListener) throws IOException, InterruptedException {
         Objects.requireNonNull(natsProperties, "NATS properties should not be null");
 
-        String server = natsProperties.getServer().strip();
+        String server = Optional.ofNullable(natsProperties.getServer())
+                .map(String::strip)
+                .orElseThrow(() -> new NullPointerException("NATS server should not be null"));
 
         if (server.isEmpty()) {
             throw new IllegalArgumentException("NATS server url should not be empty");
