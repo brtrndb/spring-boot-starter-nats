@@ -15,32 +15,20 @@ public class NatsContainer extends GenericContainer<NatsContainer> {
     private static final int NATS_PORT_MONITORING = 8222;
     private static final String NATS_AUTH = "test";
 
-    /**/
-
     private static NatsContainer container = null;
-
-    /**/
 
     public NatsContainer() {
         super(IMAGE_VERSION);
     }
 
-    /**/
-
-    public void withLog(boolean logging) {
-        if (logging) {
-            Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(log).withSeparateOutputStreams();
-            this.followOutput(logConsumer);
-        }
+    public void withLog() {
+        Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(log).withSeparateOutputStreams();
+        this.followOutput(logConsumer);
     }
-
-    /**/
 
     public String getNatsUrl() {
         return "nats://" + NATS_AUTH + "@" + NatsContainer.getInstance().getContainerIpAddress() + ":" + this.getMappedPort(NATS_PORT);
     }
-
-    /**/
 
     public static NatsContainer getInstance() {
         if (Objects.isNull(container)) {
@@ -52,5 +40,4 @@ public class NatsContainer extends GenericContainer<NatsContainer> {
         return container;
     }
 
-    /**/
 }
